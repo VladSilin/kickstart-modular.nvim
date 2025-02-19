@@ -1,6 +1,68 @@
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- *** VIM CARRYOVER SETTINGS ***
+
+vim.keymap.set('n', 'gb', ':ls<cr>:b<space>', { desc = 'List buffers and start typing to open' })
+vim.keymap.set('n', 'gdb', ':ls<cr>:bd<space>', { desc = 'List buffers and start typing to delete' })
+vim.keymap.set('n', 'gvb', ':ls<cr>:vert sb<space>', { desc = 'List buffers and start typing to open in vertical split' })
+
+-- Delete buffer without touching window split
+-- (May not work)
+if vim.fn.exists ':Bd' == 0 then
+  vim.api.nvim_create_user_command('Bd', 'bp|bd #', {})
+end
+
+-- Save when focus lost
+vim.api.nvim_create_augroup('AutoSaveOnFocusLost', { clear = true })
+vim.api.nvim_create_autocmd('FocusLost', {
+  group = 'AutoSaveOnFocusLost',
+  command = 'silent! wa',
+})
+
+-- Copy to clipboard easily
+vim.api.nvim_set_keymap('n', '<Leader>y', '"*y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>p', '"*p', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>Y', '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>P', '"+p', { noremap = true, silent = true })
+
+-- Terminal Command Setup
+local term_buf = nil
+local term_win = nil
+
+function TermToggle(height)
+  if term_win and vim.api.nvim_win_is_valid(term_win) then
+    vim.cmd 'hide'
+  else
+    vim.cmd 'botright new'
+    local new_buf = vim.api.nvim_get_current_buf()
+    vim.cmd('resize ' .. height)
+    if term_buf and vim.api.nvim_buf_is_valid(term_buf) then
+      -- go to terminal buffer
+      vim.cmd('buffer ' .. term_buf)
+      -- cleanup new buffer
+      vim.cmd('bd ' .. new_buf)
+    else
+      vim.cmd 'terminal'
+      term_buf = vim.api.nvim_get_current_buf()
+      vim.wo.number = false
+      vim.wo.relativenumber = false
+      vim.wo.signcolumn = 'no'
+    end
+    vim.cmd 'startinsert!'
+    term_win = vim.api.nvim_get_current_win()
+  end
+end
+
+-- Terminal Toggle Keymaps
+vim.keymap.set('n', '<Leader>t', ':lua TermToggle(10)<CR>', { noremap = true, silent = true })
+vim.keymap.set('i', '<Leader>t', '<Esc>:lua TermToggle(10)<CR>', { noremap = true, silent = true })
+vim.keymap.set('t', '<Leader>t', '<C-\\><C-n>:lua TermToggle(10)<CR>', { noremap = true, silent = true })
+
+--
+--
+-- *** NEOVIM SETTINGS ***
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
