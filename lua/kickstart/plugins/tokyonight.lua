@@ -1,3 +1,5 @@
+-- kickstart/plugins/tokyonight: A Neovim theme inspired by Tokyo Night, providing a visually appealing and modern color scheme.
+--
 return {
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
@@ -5,6 +7,7 @@ return {
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
+    enabled = false,
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
