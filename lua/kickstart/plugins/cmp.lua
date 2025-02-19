@@ -1,3 +1,5 @@
+-- A completion plugin for Neovim, offering a powerful and extensible completion framework that integrates with various sources like LSP, buffer, path, and more.
+--
 return {
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -19,12 +21,17 @@ return {
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              local js_ts_files = { 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx' }
+              for _, value in ipairs(js_ts_files) do
+                require('luasnip').filetype_extend(value, { 'html' })
+                require('luasnip').filetype_extend(value, { 'javascript' })
+              end
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
