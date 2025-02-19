@@ -1,3 +1,5 @@
+-- A collection of small, independent Lua modules for Neovim, providing various enhancements and utilities to improve your workflow.
+--
 return {
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',

@@ -1,3 +1,5 @@
+-- This plugin provides Git integration for Neovim, showing git change signs in the sign column, and offering features like hunk navigation, staging, and more
+--
 -- Here is a more advanced example where we pass configuration
 -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
 --    require('gitsigns').setup({ ... })
