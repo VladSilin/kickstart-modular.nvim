@@ -1,3 +1,5 @@
+-- This plugin provides code formatting capabilities, integrating with various formatters to ensure consistent code style.
+--
 return {
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -34,10 +36,13 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
+        python = { 'isort', 'black' },
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        -- Making things work with React: https://github.com/stevearc/conform.nvim/issues/291
+        javascript = { 'prettier', stop_after_first = true },
+        typescript = { 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettier', stop_after_first = true },
       },
     },
   },
