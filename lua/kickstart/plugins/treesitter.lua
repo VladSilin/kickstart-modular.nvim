@@ -1,3 +1,5 @@
+-- This plugin provides better syntax highlighting and code understanding using Tree-sitter, a parser generator tool and an incremental parsing library.
+--
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
