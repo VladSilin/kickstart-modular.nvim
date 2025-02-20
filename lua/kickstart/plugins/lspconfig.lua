@@ -1,4 +1,7 @@
+-- This plugin simplifies the setup of Neovim's built-in Language Server Protocol (LSP) client, providing configurations for various language servers.
+--
 -- LSP Plugins
+-- https://www.reddit.com/r/neovim/comments/18hzcok/most_straightforward_way_to_setup_lsp/
 return {
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -166,10 +169,12 @@ return {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      --
+      --  Available servers: https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -177,8 +182,10 @@ return {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
+        ts_ls = {},
+        html = {},
+        tailwindcss = {},
+        graphql = {},
 
         lua_ls = {
           -- cmd = {...},
