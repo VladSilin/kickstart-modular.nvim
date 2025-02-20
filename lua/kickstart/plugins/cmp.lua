@@ -1,5 +1,9 @@
 -- A completion plugin for Neovim, offering a powerful and extensible completion framework that integrates with various sources like LSP, buffer, path, and more.
 --
+-- TL;DR:
+-- LSP: tool that has proper semantic understanding of your code and runs parallel to your editor
+-- Linter: tool that runs over your after you write it to find problems; usually has proper semantic understanding of your code
+-- Completer: tool that runs parallel to your editor to provide completion; may or may not have proper semantic understanding of your code
 return {
   { -- Autocompletion
     'hrsh7th/nvim-cmp',

@@ -1,3 +1,9 @@
+-- NOTE: The need for this plugin depends on your language's tooling and your preferences. If you want to have diagnostics, that your LSP doesn't give, then nvim-lint is quite handy. If your LSP does all you want, you won't need it.
+--
+-- TL;DR:
+-- LSP: tool that has proper semantic understanding of your code and runs parallel to your editor
+-- Linter: tool that runs over your after you write it to find problems; usually has proper semantic understanding of your code
+-- Completer: tool that runs parallel to your editor to provide completion; may or may not have proper semantic understanding of your code
 return {
 
   { -- Linting

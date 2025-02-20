@@ -1,5 +1,10 @@
 -- This plugin simplifies the setup of Neovim's built-in Language Server Protocol (LSP) client, providing configurations for various language servers.
 --
+-- TL;DR:
+-- LSP: tool that has proper semantic understanding of your code and runs parallel to your editor
+-- Linter: tool that runs over your after you write it to find problems; usually has proper semantic understanding of your code
+-- Completer: tool that runs parallel to your editor to provide completion; may or may not have proper semantic understanding of your code
+--
 -- LSP Plugins
 -- https://www.reddit.com/r/neovim/comments/18hzcok/most_straightforward_way_to_setup_lsp/
 return {

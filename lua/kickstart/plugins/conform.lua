@@ -1,5 +1,9 @@
 -- This plugin provides code formatting capabilities, integrating with various formatters to ensure consistent code style.
 --
+-- TL;DR:
+-- LSP: tool that has proper semantic understanding of your code and runs parallel to your editor
+-- Linter: tool that runs over your after you write it to find problems; usually has proper semantic understanding of your code
+-- Completer: tool that runs parallel to your editor to provide completion; may or may not have proper semantic understanding of your code
 return {
   { -- Autoformat
     'stevearc/conform.nvim',
