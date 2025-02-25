@@ -192,6 +192,8 @@ return {
         tailwindcss = {},
         graphql = {},
 
+        texlab = {},
+
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
