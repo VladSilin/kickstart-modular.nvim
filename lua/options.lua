@@ -114,4 +114,8 @@ vim.opt.scrolloff = 10
 -- Enable true colours for edge colorscheme
 vim.opt.termguicolors = true
 
+-- Disable netrw when opening a directory
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- vim: ts=2 sts=2 sw=2 et
