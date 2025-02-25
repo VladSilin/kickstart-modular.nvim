@@ -30,7 +30,6 @@ require('lazy').setup({
   require 'kickstart/plugins/conform',
   require 'kickstart/plugins/cmp',
   require 'kickstart/plugins/tokyonight',
-  require 'kickstart/plugins/edge',
   require 'kickstart/plugins/todo-comments',
   require 'kickstart/plugins/mini',
   require 'kickstart/plugins/treesitter',

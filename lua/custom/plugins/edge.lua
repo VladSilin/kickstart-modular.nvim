@@ -5,11 +5,11 @@ return {
     'sainnhe/edge',
     lazy = false,
     priority = 1000,
+    enabled = false,
     config = function()
       -- Optionally configure and load the colorscheme
       -- directly inside the plugin declaration.
       vim.g.edge_enable_italic = true
-      vim.g.edge_style = 'aura'
 
       -- Set the colorscheme
       vim.cmd.colorscheme 'edge'
