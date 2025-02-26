@@ -13,7 +13,7 @@ return {
   cmd = 'Neotree',
   keys = {
     { '<C-n>', ':Neotree toggle<CR>', desc = 'NeoTree toggle', silent = true },
-    { '<C-r>', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
+    { '<C-s>', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
   init = function()
     -- Open on enter when nvim started with directory arg or no arg
