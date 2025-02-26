@@ -118,4 +118,13 @@ vim.opt.termguicolors = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Enable Markdown folding
+vim.g.markdown_folding = 1
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function()
+    vim.opt_local.foldlevel = 99
+  end,
+})
+
 -- vim: ts=2 sts=2 sw=2 et
