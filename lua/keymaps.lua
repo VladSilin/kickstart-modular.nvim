@@ -107,4 +107,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- MDX files
+-- vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+--   pattern = '*.mdx',
+--   command = 'set filetype=mdx',
+-- })
+
 -- vim: ts=2 sts=2 sw=2 et
