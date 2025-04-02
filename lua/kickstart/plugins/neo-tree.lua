@@ -26,7 +26,7 @@ return {
           -- No arg
           local stat = vim.uv.fs_stat(vim.fn.argv(0))
           if stat and stat.type == 'directory' then
-            vim.cmd 'Neotree show'
+            vim.cmd('Neotree show ' .. vim.fn.argv(0))
           end
         end
       end,
