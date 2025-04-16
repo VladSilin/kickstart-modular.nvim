@@ -37,6 +37,8 @@ return {
     filesystem = {
       window = {
         mappings = {
+          ['/'] = 'noop',
+          ['?'] = 'noop',
           -- ['<C-n>'] = 'close_window',
         },
       },
