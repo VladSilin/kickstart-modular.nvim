@@ -194,6 +194,7 @@ return {
         html = {},
         tailwindcss = {},
         graphql = {},
+        astro = {},
 
         texlab = {},
 
