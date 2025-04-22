@@ -39,6 +39,7 @@ return {
         mappings = {
           ['/'] = 'noop',
           ['?'] = 'noop',
+          ['<C-h>'] = 'show_help',
           -- ['<C-n>'] = 'close_window',
         },
       },
