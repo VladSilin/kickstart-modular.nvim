@@ -16,6 +16,7 @@ vim.opt.incsearch = true -- do incremental searching
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
+vim.opt.tabstop = 2
 
 -- Set advanced autocomplete
 vim.opt.wildmenu = true
