@@ -11,6 +11,7 @@
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- Not sure if this is needed
+  -- colorscheme that will be used when installing plugins.
   -- install = { colorscheme = { 'sonokai' } },
 
   -- automatically check for plugin updates
