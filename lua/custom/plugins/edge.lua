@@ -1,22 +1,20 @@
 -- kickstart/plugins/edge: Another Neovim theme, offering a clean and minimalistic color scheme designed to reduce eye strain.
 --
 return {
-  {
-    'sainnhe/edge',
-    lazy = false,
-    priority = 1000,
-    enabled = false,
-    config = function()
-      -- Optionally configure and load the colorscheme
-      -- directly inside the plugin declaration.
-      vim.g.edge_enable_italic = true
+  'sainnhe/edge',
+  lazy = false,
+  priority = 1000,
+  enabled = false,
+  config = function()
+    -- Optionally configure and load the colorscheme
+    -- directly inside the plugin declaration.
+    vim.g.edge_enable_italic = true
 
-      -- Set the colorscheme
-      vim.cmd.colorscheme 'edge'
+    -- Set the colorscheme
+    vim.cmd.colorscheme 'edge'
 
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
-    end,
-  },
+    -- You can configure highlights by doing something like:
+    vim.cmd.hi 'Comment gui=none'
+  end,
 }
 -- vim: ts=2 sts=2 sw=2 et
