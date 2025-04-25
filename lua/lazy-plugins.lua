@@ -10,6 +10,12 @@
 --
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
+  -- Not sure if this is needed
+  -- install = { colorscheme = { 'sonokai' } },
+
+  -- automatically check for plugin updates
+  checker = { enabled = true },
+
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
