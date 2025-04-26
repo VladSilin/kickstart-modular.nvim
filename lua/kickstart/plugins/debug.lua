@@ -107,7 +107,8 @@ return {
     -- }
     --
     -- Install Python specific config
+    -- Useful resource: https://www.johntobin.ie/blog/debugging_in_neovim_with_nvim-dap/
+    -- See this for using a Mason-installed debugpy (currently debugpy must be installed per venv): https://vi.stackexchange.com/questions/44606/how-can-i-used-mason-installed-debugpy-with-nvim-dap-python
     require('dap-python').setup 'python3'
-    -- See this for using a Mason-installed debugpy (currently debugpy must be installed per venv)
   end,
 }
