@@ -1,5 +1,6 @@
 -- This plugin provides better syntax highlighting and code understanding using Tree-sitter, a parser generator tool and an incremental parsing library.
 --
+-- NOTE: May need to `brew install` treesitter for automatic loading of language plugins
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -9,7 +10,27 @@ return {
     opts = {
       -- NOTE: Need both 'css' and 'styled' for styled-components to work
       -- (see also typescript-tools.lua for LSP support for styled-components)
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'css', 'styled' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'cpp',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'css',
+        'styled',
+        'python',
+        'javascript',
+        'typescript',
+        'kotlin',
+        'java',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
