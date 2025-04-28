@@ -107,6 +107,18 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+vim.api.nvim_create_autocmd('VimEnter', {
+  desc = 'Change working directory when running nvim with a directory argument',
+  group = vim.api.nvim_create_augroup('ChangeWorkingDirWithDirArg', { clear = true }),
+  callback = function()
+    local dir = vim.fn.argv(0)
+    local stat = vim.uv.fs_stat(dir)
+    if stat and stat.type == 'directory' then
+      vim.cmd('cd ' .. dir)
+    end
+  end,
+})
+
 -- MDX files
 -- vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 --   pattern = '*.mdx',
