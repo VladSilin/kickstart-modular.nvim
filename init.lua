@@ -99,6 +99,9 @@ require 'options'
 -- [[ Basic Keymaps ]]
 require 'keymaps'
 
+-- [[ Autocommands ]]
+require 'autocmds'
+
 -- [[ Configure filetypes ]]
 require 'filetype'
 

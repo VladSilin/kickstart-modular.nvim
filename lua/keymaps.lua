@@ -13,13 +13,6 @@ if vim.fn.exists ':Bd' == 0 then
   vim.api.nvim_create_user_command('Bd', 'bp|bd #', {})
 end
 
--- Save when focus lost
-vim.api.nvim_create_augroup('AutoSaveOnFocusLost', { clear = true })
-vim.api.nvim_create_autocmd('FocusLost', {
-  group = 'AutoSaveOnFocusLost',
-  command = 'silent! wa',
-})
-
 -- Copy to clipboard easily
 vim.api.nvim_set_keymap('n', '<Leader>y', '"*y', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<Leader>p', '"*p', { noremap = true, silent = true })
@@ -92,38 +85,6 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
-vim.api.nvim_create_autocmd('VimEnter', {
-  desc = 'Change working directory when running nvim with a directory argument',
-  group = vim.api.nvim_create_augroup('ChangeWorkingDirWithDirArg', { clear = true }),
-  callback = function()
-    local dir = vim.fn.argv(0)
-    local stat = vim.uv.fs_stat(dir)
-    if stat and stat.type == 'directory' then
-      vim.cmd('cd ' .. dir)
-    end
-  end,
-})
-
--- MDX files
--- vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
---   pattern = '*.mdx',
---   command = 'set filetype=mdx',
--- })
 
 -- Oil
 vim.keymap.set('n', '-', '<cmd>Oil --float<CR>', { desc = 'Open parent directory in oil' })

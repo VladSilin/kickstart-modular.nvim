@@ -50,13 +50,12 @@ return {
   init = function()
     vim.api.nvim_create_autocmd('VimEnter', {
       desc = 'Open Alpha startup screen when nvim runs with directory argument',
-      group = vim.api.nvim_create_augroup('OpenAlphaWhenRunWithDir', { clear = true }),
+      group = vim.api.nvim_create_augroup('OpenAlphaOnEnterWithDirArg', { clear = true }),
       callback = function()
-        local dir = vim.fn.argv(0)
-        local stat = vim.uv.fs_stat(dir)
-        if stat and stat.type == 'directory' then
+        DoWithDirArg(function()
           vim.cmd 'Alpha'
-        end
+          vim.cmd 'bd 1'
+        end)
       end,
     })
   end,
