@@ -7,11 +7,30 @@ vim.keymap.set('n', 'gb', ':ls<cr>:b<space>', { desc = 'List buffers and start t
 vim.keymap.set('n', 'gdb', ':ls<cr>:bd<space>', { desc = 'List buffers and start typing to delete' })
 vim.keymap.set('n', 'gvb', ':ls<cr>:vert sb<space>', { desc = 'List buffers and start typing to open in vertical split' })
 
--- Delete buffer without touching window split
--- (May not work)
-if vim.fn.exists ':Bd' == 0 then
-  vim.api.nvim_create_user_command('Bd', 'bp|bd #', {})
+local function close_hidden_buffers()
+  -- Get a list of all buffers
+  local buffers = vim.api.nvim_list_bufs()
+
+  -- Collect all visible buffers from all tabs
+  local visible_buffers = {}
+  for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      visible_buffers[buf] = true
+    end
+  end
+
+  -- Iterate through all buffers and close the hidden ones
+  for _, buf in ipairs(buffers) do
+    if not visible_buffers[buf] and vim.api.nvim_buf_is_loaded(buf) then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
 end
+
+-- Map the function to a command for convenience
+vim.api.nvim_create_user_command('CloseHiddenBuffers', close_hidden_buffers, {})
+vim.api.nvim_set_keymap('n', 'bD', ':CloseHiddenBuffers<cr>', { noremap = true, silent = true })
 
 -- Copy to clipboard easily
 vim.api.nvim_set_keymap('n', '<Leader>y', '"*y', { noremap = true, silent = true })
