@@ -48,6 +48,32 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end,
 })
 
+-- Enable line numbers
+vim.opt.number = true
+
+-- Create an augroup for toggling relative numbers
+vim.api.nvim_create_augroup('numbertoggle', { clear = true })
+
+-- Toggle relative numbers on specific events
+vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'WinEnter' }, {
+  group = 'numbertoggle',
+  callback = function()
+    if vim.opt.number and vim.fn.mode() ~= 'i' then
+      vim.opt.relativenumber = true
+    end
+  end,
+})
+
+-- Disable relative numbers on other specific events
+vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'WinLeave' }, {
+  group = 'numbertoggle',
+  callback = function()
+    if vim.opt.number then
+      vim.opt.relativenumber = false
+    end
+  end,
+})
+
 -- MDX files
 -- vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 --   pattern = '*.mdx',
