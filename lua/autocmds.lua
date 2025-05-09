@@ -58,7 +58,7 @@ vim.api.nvim_create_augroup('numbertoggle', { clear = true })
 vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'WinEnter' }, {
   group = 'numbertoggle',
   callback = function()
-    if vim.opt.number and vim.fn.mode() ~= 'i' then
+    if vim.opt.number and vim.fn.mode() ~= 'i' and vim.bo.buftype ~= 'nofile' and vim.bo.buftype ~= 'nowrite' then
       vim.opt.relativenumber = true
     end
   end,
@@ -68,8 +68,19 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'WinEnte
 vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'WinLeave' }, {
   group = 'numbertoggle',
   callback = function()
-    if vim.opt.number then
+    if vim.opt.number and vim.bo.buftype ~= 'nofile' and vim.bo.buftype ~= 'nowrite' then
       vim.opt.relativenumber = false
+    end
+  end,
+})
+
+-- Disable line numbers, gutters, etc. in scratch buffers
+vim.api.nvim_create_autocmd('BufWinEnter', {
+  callback = function()
+    if vim.bo.buftype == 'nofile' then
+      vim.wo.number = false
+      vim.wo.relativenumber = false
+      vim.wo.signcolumn = 'no'
     end
   end,
 })
