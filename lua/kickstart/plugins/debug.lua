@@ -24,6 +24,9 @@ return {
     -- Add your own debuggers here
     -- 'leoluz/nvim-dap-go',
     'mfussenegger/nvim-dap-python',
+
+    -- Virtual text to see variable values inline
+    'theHamsta/nvim-dap-virtual-text',
   },
   keys = function(_, keys)
     local dap = require 'dap'
@@ -31,9 +34,12 @@ return {
     return {
       -- Basic debugging keymaps, feel free to change to your liking!
       { '<F5>', dap.continue, desc = 'Debug: Start/Continue' },
+      { '<F6>', dap.terminate, desc = 'Debug: Terminate' },
+
       { '<F1>', dap.step_into, desc = 'Debug: Step Into' },
       { '<F2>', dap.step_over, desc = 'Debug: Step Over' },
       { '<F3>', dap.step_out, desc = 'Debug: Step Out' },
+
       { '<leader>b', dap.toggle_breakpoint, desc = 'Debug: Toggle Breakpoint' },
       {
         '<leader>B',
@@ -43,7 +49,21 @@ return {
         desc = 'Debug: Set Breakpoint',
       },
       -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-      { '<F7>', dapui.toggle, desc = 'Debug: See last session result.' },
+      { '<F7>', dapui.toggle, desc = 'Debug: See last session result' },
+      {
+        '<leader>de',
+        function()
+          dapui.eval(nil, { enter = true })
+        end,
+        desc = 'Debug: Eval expr under cursor',
+      },
+      {
+        '<leader>dv',
+        function()
+          dapui.float_element('scopes', { enter = true })
+        end,
+        desc = 'Debug: Float scopes window',
+      },
       unpack(keys),
     }
   end,
@@ -105,10 +125,13 @@ return {
     --     detached = vim.fn.has 'win32' == 0,
     --   },
     -- }
-    --
+
     -- Install Python specific config
     -- Useful resource: https://www.johntobin.ie/blog/debugging_in_neovim_with_nvim-dap/
     -- See this for using a Mason-installed debugpy (currently debugpy must be installed per venv): https://vi.stackexchange.com/questions/44606/how-can-i-used-mason-installed-debugpy-with-nvim-dap-python
-    require('dap-python').setup 'python3'
+    local python_path = table.concat({ vim.fn.stdpath 'data', 'mason', 'packages', 'debugpy', 'venv', 'bin', 'python' }, '/'):gsub('//+', '/')
+    require('dap-python').setup(python_path)
+
+    require('nvim-dap-virtual-text').setup()
   end,
 }
