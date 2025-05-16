@@ -29,6 +29,10 @@ return {
       min_chars = 2,
     },
 
+    attachments = {
+      img_folder = 'Assets',
+    },
+
     workspaces = {
       {
         name = 'ObsidianVault',
