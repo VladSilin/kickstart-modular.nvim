@@ -148,6 +148,10 @@ vim.opt.foldlevelstart = 99
 
 vim.opt.foldnestmax = 4
 
+-- Set to 2 due to
+--   Optional, configure additional syntax highlighting / extmarks.
+--   This requires you have `conceallevel` set to 1 or 2. See `:help conceallevel` for more details.
+-- In https://github.com/epwalsh/obsidian.nvim, but causes strange ``` hiding behaviour
 vim.opt.conceallevel = 2
 
 -- vim: ts=2 sts=2 sw=2 et

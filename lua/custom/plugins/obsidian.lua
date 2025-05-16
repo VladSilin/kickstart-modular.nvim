@@ -16,6 +16,10 @@ return {
     'nvim-lua/plenary.nvim',
   },
   opts = {
+    ui = {
+      enable = true,
+    },
+
     templates = {
       folder = 'Templates',
       date_format = '%Y-%m-%d-%a',
