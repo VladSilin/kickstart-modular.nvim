@@ -26,13 +26,26 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+      { 'williamboman/mason.nvim', opts = {} }, -- NOTE: Must be loaded before dependants
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      {
+        'j-hui/fidget.nvim',
+        opts = {
+          progress = {
+            ignore = {
+              -- Disable notifications for noisy pylsp messages
+              -- https://github.com/j-hui/fidget.nvim/issues/198
+              function(msg)
+                return msg.lsp_client.name == 'pylsp' and string.find(msg.title, 'lint:')
+              end,
+            },
+          },
+        },
+      },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -161,6 +174,16 @@ return {
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
+
+          -- See https://www.reddit.com/r/neovim/comments/sazbw6/comment/hw1s6qg/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+          -- if client and client.name == 'pyright' then
+          --   client.server_capabilities.hoverProvider = nil
+          -- end
+          --
+          -- if client and client.name == 'pylsp' then
+          --   client.server_capabilities.renameProvider = nil
+          --   client.server_capabilities.signatureHelpProvider = nil
+          -- end
         end,
       })
 
@@ -214,7 +237,47 @@ return {
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pyright = {},
+
+        -- See https://www.reddit.com/r/neovim/comments/sazbw6/comment/hw1s6qg/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+        -- for configuring to use both pyright and pylsp
+        --
+        -- pyright = {
+        --   settings = {
+        --     python = {
+        --       analysis = {
+        --         useLibraryCodeForTypes = true,
+        --         diagnosticSeverityOverrides = {
+        --           reportGeneralTypeIssues = 'none',
+        --           reportOptionalMemberAccess = 'none',
+        --           reportOptionalSubscript = 'none',
+        --           reportPrivateImportUsage = 'none',
+        --         },
+        --         autoImportCompletions = false,
+        --       },
+        --       linting = { pylintEnabled = false },
+        --     },
+        --   },
+        -- },
+        -- pylsp appears to have better function docs
+        pylsp = {
+          settings = {
+            pylsp = {
+              -- builtin = {
+              --   installExtraArgs = { 'flake8', 'pycodestyle', 'pydocstyle', 'pyflakes', 'pylint', 'yapf' },
+              -- },
+              plugins = {
+                -- jedi_completion = { enabled = false },
+                -- rope_completion = { enabled = false },
+                -- flake8 = { enabled = false },
+                -- pyflakes = { enabled = false },
+                pycodestyle = {
+                  ignore = { 'E226', 'E266', 'E302', 'E303', 'E304', 'E305', 'E402', 'E501', 'C0103', 'W0104', 'W0621', 'W391', 'W503', 'W504' },
+                  maxLineLength = 99,
+                },
+              },
+            },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -249,14 +312,24 @@ return {
         },
       }
 
+      -- NOTE: Once LSPs are updated and stable, this can be used (also see below)
+      --
+      -- ---@type MasonLspconfigSettings
+      -- ---@diagnostic disable-next-line: missing-fields
+      -- require('mason-lspconfig').setup {
+      --   automatic_enable = vim.tbl_keys(servers or {}),
+      -- }
+
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
       --    :Mason
       --
       --  You can press `g?` for help in this menu.
-      require('mason').setup()
-
+      --
+      -- `mason` had to be setup earlier: to configure its options see the
+      -- `dependencies` table for `nvim-lspconfig` above.
+      --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
@@ -272,18 +345,19 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      -- NOTE: Once LSPs are updated and stable, this can be used
+      --
+      -- Installed LSPs are configured and enabled automatically with mason-lspconfig
+      -- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
+      -- for server_name, config in pairs(servers) do
+      --   vim.lsp.config(server_name, config)
+      -- end
+
+      -- NOTE: For now, use the below due to https://github.com/neovim/nvim-lspconfig/issues/3705
+      for server_name, server in pairs(servers) do
+        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        require('lspconfig')[server_name].setup(server)
+      end
     end,
   },
 }
