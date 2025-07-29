@@ -1,5 +1,6 @@
 return {
   'olimorris/codecompanion.nvim',
+  enabled = true,
   opts = {
     strategies = {
       chat = {
@@ -19,7 +20,7 @@ return {
     },
   },
   init = function()
-    vim.keymap.set({ 'n', 'v' }, '<Leader>cc', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true })
+    vim.keymap.set({ 'n', 'v' }, '<Leader>ccc', '<cmd>CodeCompanionChat Toggle<cr>', { noremap = true, silent = true })
     vim.keymap.set('v', '<Leader>ccv', '<cmd>CodeCompanionChat Add<cr>', { noremap = true, silent = true })
 
     vim.keymap.set({ 'n', 'v' }, '<Leader>cci', '<cmd>CodeCompanion<cr>', { noremap = true, silent = true })
