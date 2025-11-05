@@ -4,10 +4,16 @@ return {
   opts = {
     strategies = {
       chat = {
-        adapter = 'copilot',
+        adapter = {
+          name = 'copilot',
+          model = 'claude-sonnet-4.5',
+        },
       },
       inline = {
-        adapter = 'copilot',
+        adapter = {
+          name = 'copilot',
+          model = 'claude-sonnet-4.5',
+        },
         -- accept_change = {
         --   modes = { n = 'ccy' },
         --   description = 'Accept the suggested change',
