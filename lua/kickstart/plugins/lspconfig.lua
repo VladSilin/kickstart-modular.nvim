@@ -312,7 +312,9 @@ return {
         },
       }
 
-      -- NOTE: Once LSPs are updated and stable, this can be used (also see below)
+      -- NOTE: This is an alternative to the manual enable loop below (but only works for Mason-installed LSPs):
+      -- See https://github.com/nvim-lua/kickstart.nvim/pull/1590/files if separation between
+      -- Mason-installed vs other LSPs is desired in the future
       --
       -- ---@type MasonLspconfigSettings
       -- ---@diagnostic disable-next-line: missing-fields
@@ -345,18 +347,14 @@ return {
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      -- NOTE: Once LSPs are updated and stable, this can be used
-      --
-      -- Installed LSPs are configured and enabled automatically with mason-lspconfig
+      -- NOTE: Installed LSPs can be configured and enabled automatically with mason-lspconfig (see above) but using
+      -- this to avoid needing to handle Mason and non-Mason LSPs separately
       -- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
-      -- for server_name, config in pairs(servers) do
-      --   vim.lsp.config(server_name, config)
-      -- end
+      for server_name, server_config in pairs(servers) do
+        server_config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_config.capabilities or {})
 
-      -- NOTE: For now, use the below due to https://github.com/neovim/nvim-lspconfig/issues/3705
-      for server_name, server in pairs(servers) do
-        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-        require('lspconfig')[server_name].setup(server)
+        vim.lsp.config(server_name, server_config)
+        vim.lsp.enable(server_name)
       end
     end,
   },
