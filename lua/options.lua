@@ -154,4 +154,7 @@ vim.opt.foldnestmax = 4
 -- In https://github.com/epwalsh/obsidian.nvim, but causes strange ``` hiding behaviour
 vim.opt.conceallevel = 2
 
+-- Disable tilde end-of-buffer chars
+vim.opt.fillchars = { eob = ' ' }
+
 -- vim: ts=2 sts=2 sw=2 et
