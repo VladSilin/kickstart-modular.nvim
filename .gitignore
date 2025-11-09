@@ -1,7 +1,2 @@
-tags
-test.sh
-.luarc.json
-nvim
-
-spell/
-.aider*
+git add .gitignore
+git commit -m "Add .gitignore"
