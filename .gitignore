@@ -1,2 +1,5 @@
 git add .gitignore
 git commit -m "Add .gitignore"
+.aider.chat.history.md
+.aider.input.history
+.aider.tags.cache.v4/
