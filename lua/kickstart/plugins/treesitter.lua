@@ -30,6 +30,8 @@ return {
         'typescript',
         'kotlin',
         'java',
+        'hcl',
+        'terraform',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
