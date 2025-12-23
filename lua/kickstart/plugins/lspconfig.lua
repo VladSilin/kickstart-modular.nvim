@@ -271,7 +271,7 @@ return {
                 flake8 = { enabled = false },
                 pyflakes = { enabled = false },
                 pycodestyle = {
-                  ignore = { 'E226', 'E266', 'E302', 'E303', 'E304', 'E305', 'E402', 'E501', 'C0103', 'W0104', 'W0621', 'W391', 'W503', 'W504' },
+                  ignore = { 'E203', 'E226', 'E266', 'E302', 'E303', 'E304', 'E305', 'E402', 'E501', 'C0103', 'W0104', 'W0621', 'W391', 'W503', 'W504' },
                   maxLineLength = 99,
                 },
               },
