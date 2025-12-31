@@ -85,6 +85,15 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
   end,
 })
 
+-- Enable auto-reload of files changed outside Neovim
+vim.opt.autoread = true
+
+-- Auto-reload files when focusing or entering a buffer
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
+  pattern = '*',
+  command = 'checktime',
+})
+
 -- MDX files
 -- vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 --   pattern = '*.mdx',
