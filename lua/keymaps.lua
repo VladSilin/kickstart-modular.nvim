@@ -108,4 +108,26 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Oil
 vim.keymap.set('n', '-', '<cmd>Oil --float<CR>', { desc = 'Open parent directory in oil' })
 
+-- Copy current path to clipboard
+local function copy_path_to_clipboard(include_line)
+  local filepath = vim.fn.expand '%:.'
+  local result = filepath
+
+  if include_line then
+    local line_number = vim.fn.line '.'
+    result = filepath .. ':' .. line_number
+  end
+
+  vim.fn.setreg('+', result)
+  vim.notify('Copied: ' .. result, vim.log.levels.INFO)
+end
+
+vim.keymap.set('n', '<leader>cpp', function()
+  copy_path_to_clipboard(false)
+end, { desc = 'Copy relative path to clipboard' })
+
+vim.keymap.set('n', '<leader>cpl', function()
+  copy_path_to_clipboard(true)
+end, { desc = 'Copy relative path with line number to clipboard' })
+
 -- vim: ts=2 sts=2 sw=2 et
