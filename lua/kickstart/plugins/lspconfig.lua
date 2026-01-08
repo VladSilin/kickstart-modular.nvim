@@ -42,6 +42,11 @@ return {
               function(msg)
                 return msg.lsp_client.name == 'pylsp' and string.find(msg.title, 'lint:')
               end,
+
+              -- Disable all pyright notifications
+              function(msg)
+                return msg.lsp_client.name == 'pyright'
+              end,
             },
           },
         },
@@ -173,6 +178,11 @@ return {
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
+
+            -- Auto-enable inlay hints for Python with pyright
+            if client.name == 'pyright' then
+              vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+            end
           end
 
           -- See https://www.reddit.com/r/neovim/comments/sazbw6/comment/hw1s6qg/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
@@ -241,43 +251,48 @@ return {
         -- See https://www.reddit.com/r/neovim/comments/sazbw6/comment/hw1s6qg/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
         -- for configuring to use both pyright and pylsp
         --
-        -- pyright = {
-        --   settings = {
-        --     python = {
-        --       analysis = {
-        --         useLibraryCodeForTypes = true,
-        --         diagnosticSeverityOverrides = {
-        --           reportGeneralTypeIssues = 'none',
-        --           reportOptionalMemberAccess = 'none',
-        --           reportOptionalSubscript = 'none',
-        --           reportPrivateImportUsage = 'none',
-        --         },
-        --         autoImportCompletions = false,
-        --       },
-        --       linting = { pylintEnabled = false },
-        --     },
-        --   },
-        -- },
-        -- pylsp appears to have better function docs
-        pylsp = {
+        pyright = {
           settings = {
-            pylsp = {
-              -- builtin = {
-              --   installExtraArgs = { 'flake8', 'pycodestyle', 'pydocstyle', 'pyflakes', 'pylint', 'yapf' },
-              -- },
-              plugins = {
-                -- jedi_completion = { enabled = false },
-                -- rope_completion = { enabled = false },
-                flake8 = { enabled = false },
-                pyflakes = { enabled = false },
-                pycodestyle = {
-                  ignore = { 'E203', 'E226', 'E266', 'E302', 'E303', 'E304', 'E305', 'E402', 'E501', 'C0103', 'W0104', 'W0621', 'W391', 'W503', 'W504' },
-                  maxLineLength = 99,
+            python = {
+              analysis = {
+                typeCheckingMode = 'basic', -- Use "basic" for some type checking, "off" for inlay hints only
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                autoImportCompletions = true,
+                diagnosticMode = 'workspace',
+                -- Reduce noise from type checking in partially-typed codebases
+                diagnosticSeverityOverrides = {
+                  reportGeneralTypeIssues = 'none',
+                  reportOptionalMemberAccess = 'none',
+                  reportOptionalSubscript = 'none',
+                  reportPrivateImportUsage = 'none',
+                  reportUnusedImport = 'information',
+                  reportUnusedVariable = 'information',
                 },
               },
             },
           },
         },
+        -- pylsp appears to have better function docs
+        -- pylsp = {
+        --   settings = {
+        --     pylsp = {
+        --       -- builtin = {
+        --       --   installExtraArgs = { 'flake8', 'pycodestyle', 'pydocstyle', 'pyflakes', 'pylint', 'yapf' },
+        --       -- },
+        --       plugins = {
+        --         -- jedi_completion = { enabled = false },
+        --         -- rope_completion = { enabled = false },
+        --         flake8 = { enabled = false },
+        --         pyflakes = { enabled = false },
+        --         pycodestyle = {
+        --           ignore = { 'E203', 'E226', 'E266', 'E302', 'E303', 'E304', 'E305', 'E402', 'E501', 'C0103', 'W0104', 'W0621', 'W391', 'W503', 'W504' },
+        --           maxLineLength = 99,
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
