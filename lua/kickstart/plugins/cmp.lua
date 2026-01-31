@@ -52,6 +52,9 @@ return {
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
 
+      -- Load custom snippets from ~/.config/nvim/snippets
+      require('luasnip.loaders.from_lua').lazy_load { paths = '~/.config/nvim/snippets' }
+
       cmp.setup {
         snippet = {
           expand = function(args)

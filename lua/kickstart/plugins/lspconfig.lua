@@ -309,7 +309,20 @@ return {
         graphql = {},
         astro = {},
 
-        texlab = {},
+        texlab = {
+          settings = {
+            texlab = {
+              build = {
+                onSave = true, -- Auto-compile on save
+                forwardSearchAfter = true, -- Auto-update PDF viewer
+              },
+              forwardSearch = {
+                executable = 'zathura',
+                args = { '--synctex-forward', '%l:1:%f', '%p' },
+              },
+            },
+          },
+        },
 
         terraformls = {},
 

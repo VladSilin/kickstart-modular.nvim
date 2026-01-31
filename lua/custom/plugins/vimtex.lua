@@ -8,6 +8,22 @@ return {
     -- Making zathura work on MacOS: https://github.com/lervag/vimtex/issues/2391
     vim.g.vimtex_view_zathura_use_synctex = 0
 
+    -- Enable concealment for prettier LaTeX symbols
+    vim.g.vimtex_syntax_conceal_default = 1
+
+    -- Default VimTeX keymaps (using maplocalleader, which is set to ','):
+    -- ,ll - Toggle continuous compilation
+    -- ,lv - View PDF
+    -- ,lk - Kill compilation
+    -- ,le - View errors/warnings
+    -- ,lt - Toggle table of contents
+    -- ,lc - Clean auxiliary files
+    -- ,lC - Clean all output files
+    -- ,li - Show info
+    -- ,lI - Show full info
+    -- ,lT - Toggle TOC
+    -- See :h vimtex-default-mappings for complete list
+
     -- From: https://github.com/lervag/vimtex/blob/master/doc/vimtex.txt#L4671-L4713
     -- vim.o.foldmethod = 'expr'
     -- vim.o.foldexpr = 'vimtex#fold#level(v:lnum)'
