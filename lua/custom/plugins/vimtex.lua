@@ -8,8 +8,8 @@ return {
     -- Making zathura work on MacOS: https://github.com/lervag/vimtex/issues/2391
     vim.g.vimtex_view_zathura_use_synctex = 0
 
-    -- Enable concealment for prettier LaTeX symbols
-    vim.g.vimtex_syntax_conceal_default = 1
+    -- Concealment is enabled automatically via conceallevel=2 in options.lua
+    -- VimTeX will conceal LaTeX symbols for prettier rendering (e.g., \alpha → α)
 
     -- Default VimTeX keymaps (using maplocalleader, which is set to ','):
     -- ,ll - Toggle continuous compilation
