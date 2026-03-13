@@ -308,6 +308,7 @@ return {
         tailwindcss = {},
         graphql = {},
         astro = {},
+        eslint = {},
 
         texlab = {
           settings = {
