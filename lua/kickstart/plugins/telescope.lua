@@ -94,6 +94,17 @@ return {
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+      vim.keymap.set('n', '<leader>sH', function()
+        require('telescope.pickers')
+          .new({}, {
+            prompt_title = 'Hints',
+            finder = require('telescope.finders').new_table {
+              results = require 'custom.hints',
+            },
+            sorter = require('telescope.config').values.generic_sorter {},
+          })
+          :find()
+      end, { desc = '[S]earch [H]ints' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
