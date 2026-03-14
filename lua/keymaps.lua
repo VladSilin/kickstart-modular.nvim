@@ -30,19 +30,19 @@ end
 
 -- Map the function to a command for convenience
 vim.api.nvim_create_user_command('CloseHiddenBuffers', close_hidden_buffers, {})
-vim.api.nvim_set_keymap('n', 'bD', ':CloseHiddenBuffers<cr>', { noremap = true, silent = true })
+vim.keymap.set('n', 'bD', ':CloseHiddenBuffers<cr>', { silent = true, desc = 'Close hidden buffers' })
 
 -- Copy to clipboard easily
-vim.api.nvim_set_keymap('n', '<Leader>y', '"*y', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>p', '"*p', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>Y', '"+y', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>P', '"+p', { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>y', '"*y', { silent = true, desc = 'Yank to system clipboard (*)' })
+vim.keymap.set('n', '<Leader>p', '"*p', { silent = true, desc = 'Paste from system clipboard (*)' })
+vim.keymap.set('n', '<Leader>Y', '"+y', { silent = true, desc = 'Yank to clipboard (+)' })
+vim.keymap.set('n', '<Leader>P', '"+p', { silent = true, desc = 'Paste from clipboard (+)' })
 
 -- Terminal Command Setup
 local term_buf = nil
 local term_win = nil
 
-function TermToggle(height)
+local function TermToggle(height)
   if term_win and vim.api.nvim_win_is_valid(term_win) then
     vim.cmd 'hide'
   else
@@ -67,9 +67,9 @@ function TermToggle(height)
 end
 
 -- Terminal Toggle Keymaps
-vim.keymap.set('n', '<Leader>t', ':lua TermToggle(10)<CR>', { noremap = true, silent = true })
-vim.keymap.set('i', '<Leader>t', '<Esc>:lua TermToggle(10)<CR>', { noremap = true, silent = true })
-vim.keymap.set('t', '<Leader>t', '<C-\\><C-n>:lua TermToggle(10)<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>t', function() TermToggle(10) end, { silent = true, desc = 'Toggle terminal' })
+vim.keymap.set('i', '<Leader>t', function() vim.cmd('stopinsert'); TermToggle(10) end, { silent = true, desc = 'Toggle terminal' })
+vim.keymap.set('t', '<Leader>t', function() TermToggle(10) end, { silent = true, desc = 'Toggle terminal' })
 
 --
 --
