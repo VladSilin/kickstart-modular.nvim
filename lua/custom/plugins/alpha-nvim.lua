@@ -45,6 +45,62 @@ return {
       quit_button,
     }
 
+    -- ── Hints: shortcuts & features to remember ──
+    -- Edit this list to add/remove reminders!
+    local hints = {
+      '󰋼 Diagnostics    ]d / [d next/prev • <C-W>d float (q close, <C-W><C-W> scroll) • <leader>q list',
+      '󰡍 Folds          zR open all • zM close all • za toggle • zo/zc open/close',
+      '󰆼 Marks          ma set • \'a jump • :marks list all',
+      '󰁨 Quickfix       :cnext / :cprev • <leader>q toggle list',
+      '󰊢 Git hunks      ]c / [c next/prev • <leader>hs stage • <leader>hp preview',
+    }
+
+    -- Pick a random subset each launch
+    local num_hints = 3
+    math.randomseed(os.time())
+    local pool = { unpack(hints) }
+    local selected = {}
+    for _ = 1, math.min(num_hints, #pool) do
+      local i = math.random(#pool)
+      table.insert(selected, table.remove(pool, i))
+    end
+
+    -- Find the longest hint to center the header within the block
+    local max_width = 0
+    for _, hint in ipairs(selected) do
+      max_width = math.max(max_width, vim.fn.strdisplaywidth(hint))
+    end
+
+    local header_text = '─── Remember ───'
+    local header_width = vim.fn.strdisplaywidth(header_text)
+    local pad = math.floor((max_width - header_width) / 2)
+    local centered_header = string.rep(' ', math.max(pad, 0)) .. header_text
+
+    local hint_lines = { centered_header, '' }
+    for _, hint in ipairs(selected) do
+      table.insert(hint_lines, hint)
+    end
+
+    dashboard.section.hints = {
+      type = 'text',
+      val = hint_lines,
+      opts = {
+        position = 'center',
+        hl = 'Comment',
+      },
+    }
+
+    dashboard.opts.layout = {
+      { type = 'padding', val = 2 },
+      dashboard.section.header,
+      { type = 'padding', val = 2 },
+      dashboard.section.buttons,
+      { type = 'padding', val = 2 },
+      dashboard.section.hints,
+      { type = 'padding', val = 1 },
+      dashboard.section.footer,
+    }
+
     alpha.setup(dashboard.opts)
   end,
   init = function()
