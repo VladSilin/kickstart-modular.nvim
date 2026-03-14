@@ -7,6 +7,10 @@ return {
     float = {
       border = 'rounded',
     },
+    keymaps = {
+      ['<Esc>'] = { 'actions.close', mode = 'n' },
+      ['q'] = { 'actions.close', mode = 'n' },
+    },
   },
   -- Optional dependencies
   -- dependencies = { { 'echasnovski/mini.icons', opts = {} } },
