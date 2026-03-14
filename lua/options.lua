@@ -5,12 +5,7 @@
 
 -- *** VIM CARRYOVER SETTINGS ***
 
--- allow backspacing over everything in insert mode
-vim.opt.backspace = { 'indent', 'eol', 'start' }
-
 vim.opt.history = 50 -- keep 50 lines of command line history
-vim.opt.ruler = true -- show the cursor position all the time
-vim.opt.incsearch = true -- do incremental searching
 
 -- Tab settings
 vim.opt.expandtab = true
@@ -20,10 +15,6 @@ vim.opt.softtabstop = 4
 
 vim.opt.smarttab = true
 vim.opt.smartindent = true
-vim.opt.autoindent = true
-
--- Set advanced autocomplete
-vim.opt.wildmenu = true
 
 -- *DNW* Do not highlight searches
 -- vim.opt.nohlsearch = true
@@ -34,23 +25,9 @@ vim.opt.wildmenu = true
 -- Autosave buffers
 vim.opt.autowriteall = true
 
--- Keep buffer undo history
-vim.opt.hidden = true
-
 -- Swap File Location Setup
 vim.opt.swapfile = true
 vim.opt.directory = os.getenv 'HOME' .. '/tmp'
-
--- Prevent lag when switching between modes
-vim.opt.timeoutlen = 1000
-vim.opt.ttimeoutlen = 5
-
--- netrw (File Tree Browser) Config
-vim.g.netrw_banner = 0
-vim.g.netrw_liststyle = 3
-vim.g.netrw_browse_split = 4
-vim.g.netrw_altv = 1
-vim.g.netrw_winsize = 20
 
 --
 --
@@ -62,9 +39,6 @@ vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
-
--- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -116,9 +90,6 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
-
--- Enable true colours for edge colorscheme
-vim.opt.termguicolors = true
 
 -- Disable netrw when opening a directory
 vim.g.loaded_netrw = 1
