@@ -45,6 +45,36 @@ return {
       quit_button,
     }
 
+    -- Recent files from current working directory (lazy so shada is loaded)
+    dashboard.section.mru = {
+      type = 'group',
+      val = function()
+        local cwd = vim.fn.getcwd()
+        local cwd_prefix = cwd .. '/'
+        local recent = {}
+        for _, file in ipairs(vim.v.oldfiles) do
+          if vim.startswith(file, cwd_prefix) and vim.fn.filereadable(file) == 1 then
+            table.insert(recent, file)
+            if #recent >= 5 then break end
+          end
+        end
+
+        if #recent == 0 then
+          return {}
+        end
+
+        local buttons = {}
+        for i, file in ipairs(recent) do
+          local rel = file:sub(#cwd_prefix + 1)
+          local btn = dashboard.button(tostring(i), '󰈙 ' .. rel, '<cmd>e ' .. vim.fn.fnameescape(file) .. '<CR>')
+          btn.opts.cursor = cursor_position
+          btn.opts.hl = 'Comment'
+          table.insert(buttons, btn)
+        end
+        return buttons
+      end,
+    }
+
     local hints = require 'custom.hints'
 
     -- Pick a random subset each launch
@@ -87,6 +117,8 @@ return {
       dashboard.section.header,
       { type = 'padding', val = 2 },
       dashboard.section.buttons,
+      { type = 'padding', val = 1 },
+      dashboard.section.mru,
       { type = 'padding', val = 2 },
       dashboard.section.hints,
       { type = 'padding', val = 1 },
