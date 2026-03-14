@@ -19,7 +19,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
-function DoWithDirArg(callback)
+local function DoWithDirArg(callback)
   local num_args = vim.fn.argc()
 
   if num_args < 1 then
@@ -99,3 +99,5 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
 --   pattern = '*.mdx',
 --   command = 'set filetype=mdx',
 -- })
+
+return { DoWithDirArg = DoWithDirArg }

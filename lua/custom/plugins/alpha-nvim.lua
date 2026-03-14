@@ -52,7 +52,7 @@ return {
       desc = 'Open Alpha startup screen when nvim runs with directory argument',
       group = vim.api.nvim_create_augroup('OpenAlphaOnEnterWithDirArg', { clear = true }),
       callback = function()
-        DoWithDirArg(function()
+        require('autocmds').DoWithDirArg(function()
           vim.cmd 'Alpha'
           vim.cmd 'bd 1'
         end)
