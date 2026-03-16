@@ -23,6 +23,9 @@ return {
   { 'Bilal2453/luvit-meta', lazy = true },
   {
     -- Main LSP Configuration
+    -- Neovim has a built-in LSP client but doesn't know how to start/configure
+    -- any specific server. This plugin provides community-maintained configs
+    -- (cmd, filetypes, root_dir, etc.) for 100+ servers so you don't have to.
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim

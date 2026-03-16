@@ -66,6 +66,10 @@ return {
         local buttons = {}
         for i, file in ipairs(recent) do
           local rel = file:sub(#cwd_prefix + 1)
+          local max_len = 40
+          if #rel > max_len then
+            rel = '…' .. rel:sub(-max_len + 1)
+          end
           local btn = dashboard.button(tostring(i), '󰈙 ' .. rel, '<cmd>e ' .. vim.fn.fnameescape(file) .. '<CR>')
           btn.opts.cursor = cursor_position
           btn.opts.hl = 'Comment'

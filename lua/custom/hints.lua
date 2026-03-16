@@ -15,4 +15,5 @@ return {
   '󰭎 Telescope      <leader>sk keymaps • <leader>sw search word • <leader>sr resume last',
   '󰊢 Diffview       <leader>gd open diff • <leader>gh file history • <leader>gH branch history',
   '󰆍 Terminal       <leader>t toggle • <Esc><Esc> exit terminal mode',
+  '󰏖 Mason          :MasonInstall to rebuild tools after e.g. Python upgrades',
 }
