@@ -100,4 +100,46 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
 --   command = 'set filetype=mdx',
 -- })
 
+-- Show "gx to open" hint on lines with markdown links
+local link_hint_ns = vim.api.nvim_create_namespace 'link_hint'
+vim.api.nvim_create_autocmd('CursorMoved', {
+  callback = function()
+    vim.api.nvim_buf_clear_namespace(0, link_hint_ns, 0, -1)
+    local line = vim.api.nvim_get_current_line()
+    local col = vim.api.nvim_win_get_cursor(0)[2] + 1
+    local show = false
+    -- Check if cursor is inside a markdown link [text](url)
+    local start = 1
+    while true do
+      local s, e = line:find('%[.-%]%(https?://.-%)', start)
+      if not s then break end
+      if col >= s and col <= e then
+        show = true
+        break
+      end
+      start = e + 1
+    end
+    -- Check if cursor is on a bare URL
+    if not show then
+      start = 1
+      while true do
+        local s, e = line:find('https?://[%w_.~!*\'();:@&=+$,/?#%%%-]+', start)
+        if not s then break end
+        if col >= s and col <= e then
+          show = true
+          break
+        end
+        start = e + 1
+      end
+    end
+    if show then
+      local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+      vim.api.nvim_buf_set_extmark(0, link_hint_ns, row, 0, {
+        virt_text = { { '  gx to open link', 'Comment' } },
+        virt_text_pos = 'eol',
+      })
+    end
+  end,
+})
+
 return { DoWithDirArg = DoWithDirArg }
