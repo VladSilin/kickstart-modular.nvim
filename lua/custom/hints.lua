@@ -17,4 +17,9 @@ return {
   '󰆍 Terminal       <leader>t toggle • <Esc><Esc> exit terminal mode',
   '󰏖 Mason          :MasonInstall to rebuild tools after e.g. Python upgrades',
   '󰋩 Obsidian       <leader>mo open attachment in Preview • <leader>mp paste image from clipboard',
+  '󰘳 Run under ↓    gx open URL/path • K lookup word (man) • !! run line as shell cmd • :.w !sh run without replace',
+  '󰃤 Debug          <F5> start/continue • <F6> terminate • <F7> toggle UI',
+  '󰃤 Debug step     <F1> step into • <F2> step over • <F3> step out',
+  '󰃤 Debug break    <leader>b toggle breakpoint • <leader>B conditional breakpoint',
+  '󰃤 Debug inspect  <leader>de eval under cursor • <leader>dv float scopes',
 }

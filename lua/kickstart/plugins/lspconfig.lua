@@ -188,15 +188,16 @@ return {
             end
           end
 
-          -- See https://www.reddit.com/r/neovim/comments/sazbw6/comment/hw1s6qg/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-          -- if client and client.name == 'pyright' then
-          --   client.server_capabilities.hoverProvider = nil
-          -- end
-          --
-          -- if client and client.name == 'pylsp' then
-          --   client.server_capabilities.renameProvider = nil
-          --   client.server_capabilities.signatureHelpProvider = nil
-          -- end
+          -- Disable pyright hover (pylsp/Jedi provides better docs)
+          if client and client.name == 'pyright' then
+            client.server_capabilities.hoverProvider = nil
+          end
+
+          -- Disable pylsp features that duplicate pyright
+          if client and client.name == 'pylsp' then
+            client.server_capabilities.renameProvider = nil
+            client.server_capabilities.signatureHelpProvider = nil
+          end
         end,
       })
 
@@ -267,26 +268,36 @@ return {
             },
           },
         },
-        -- pylsp appears to have better function docs
-        -- pylsp = {
-        --   settings = {
-        --     pylsp = {
-        --       -- builtin = {
-        --       --   installExtraArgs = { 'flake8', 'pycodestyle', 'pydocstyle', 'pyflakes', 'pylint', 'yapf' },
-        --       -- },
-        --       plugins = {
-        --         -- jedi_completion = { enabled = false },
-        --         -- rope_completion = { enabled = false },
-        --         flake8 = { enabled = false },
-        --         pyflakes = { enabled = false },
-        --         pycodestyle = {
-        --           ignore = { 'E203', 'E226', 'E266', 'E302', 'E303', 'E304', 'E305', 'E402', 'E501', 'C0103', 'W0104', 'W0621', 'W391', 'W503', 'W504' },
-        --           maxLineLength = 99,
-        --         },
-        --       },
-        --     },
-        --   },
-        -- },
+        -- pylsp for hover docs (Jedi), everything else disabled to avoid conflicts with pyright
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                -- Disable all diagnostics/linting (pyright handles these)
+                pyflakes = { enabled = false },
+                flake8 = { enabled = false },
+                pycodestyle = { enabled = false },
+                pylint = { enabled = false },
+                mccabe = { enabled = false },
+                pydocstyle = { enabled = false },
+                -- Disable formatting (use black/other formatters)
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                -- Disable completion (pyright handles this)
+                jedi_completion = { enabled = false },
+                -- Keep hover/docs and signatures enabled (the whole point)
+                jedi_hover = { enabled = true },
+                jedi_signature_help = { enabled = true },
+                -- Disable remaining features to avoid duplicates
+                jedi_references = { enabled = false },
+                jedi_definition = { enabled = false },
+                jedi_symbols = { enabled = false },
+                rope_completion = { enabled = false },
+                rope_rename = { enabled = false },
+              },
+            },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
