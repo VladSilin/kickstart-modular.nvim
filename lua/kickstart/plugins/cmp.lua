@@ -45,6 +45,7 @@ return {
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'lukas-reineke/cmp-under-comparator',
     },
     config = function()
       -- See `:help cmp`
@@ -55,6 +56,8 @@ return {
       -- Load custom snippets from ~/.config/nvim/snippets
       require('luasnip.loaders.from_lua').lazy_load { paths = '~/.config/nvim/snippets' }
 
+      local compare = require 'cmp.config.compare'
+
       cmp.setup {
         snippet = {
           expand = function(args)
@@ -62,6 +65,19 @@ return {
           end,
         },
         completion = { completeopt = 'menu,menuone,noinsert,popup' },
+        sorting = {
+          priority_weight = 2,
+          comparators = {
+            compare.exact,
+            compare.locality,
+            compare.recently_used,
+            compare.score,
+            require('cmp-under-comparator').under, -- deprioritize dunder methods
+            compare.kind,
+            compare.length,
+            compare.order,
+          },
+        },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`

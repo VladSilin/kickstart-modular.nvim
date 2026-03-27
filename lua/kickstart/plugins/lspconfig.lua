@@ -40,12 +40,6 @@ return {
         opts = {
           progress = {
             ignore = {
-              -- Disable notifications for noisy pylsp messages
-              -- https://github.com/j-hui/fidget.nvim/issues/198
-              function(msg)
-                return msg.lsp_client.name == 'pylsp' and string.find(msg.title, 'lint:')
-              end,
-
               -- Disable all pyright notifications
               function(msg)
                 return msg.lsp_client.name == 'pyright'
@@ -188,15 +182,9 @@ return {
             end
           end
 
-          -- Disable pyright hover (pylsp/Jedi provides better docs)
-          if client and client.name == 'pyright' then
+          -- Disable ruff hover (pyright provides better docs)
+          if client and client.name == 'ruff' then
             client.server_capabilities.hoverProvider = nil
-          end
-
-          -- Disable pylsp features that duplicate pyright
-          if client and client.name == 'pylsp' then
-            client.server_capabilities.renameProvider = nil
-            client.server_capabilities.signatureHelpProvider = nil
           end
         end,
       })
@@ -250,7 +238,7 @@ return {
           settings = {
             python = {
               analysis = {
-                typeCheckingMode = 'basic', -- Use "basic" for some type checking, "off" for inlay hints only
+                typeCheckingMode = 'basic',
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
                 autoImportCompletions = true,
@@ -261,43 +249,13 @@ return {
                   reportOptionalMemberAccess = 'none',
                   reportOptionalSubscript = 'none',
                   reportPrivateImportUsage = 'none',
-                  reportUnusedImport = 'information',
-                  reportUnusedVariable = 'information',
                 },
               },
             },
           },
         },
-        -- pylsp for hover docs (Jedi), everything else disabled to avoid conflicts with pyright
-        pylsp = {
-          settings = {
-            pylsp = {
-              plugins = {
-                -- Disable all diagnostics/linting (pyright handles these)
-                pyflakes = { enabled = false },
-                flake8 = { enabled = false },
-                pycodestyle = { enabled = false },
-                pylint = { enabled = false },
-                mccabe = { enabled = false },
-                pydocstyle = { enabled = false },
-                -- Disable formatting (use black/other formatters)
-                autopep8 = { enabled = false },
-                yapf = { enabled = false },
-                -- Disable completion (pyright handles this)
-                jedi_completion = { enabled = false },
-                -- Keep hover/docs and signatures enabled (the whole point)
-                jedi_hover = { enabled = true },
-                jedi_signature_help = { enabled = true },
-                -- Disable remaining features to avoid duplicates
-                jedi_references = { enabled = false },
-                jedi_definition = { enabled = false },
-                jedi_symbols = { enabled = false },
-                rope_completion = { enabled = false },
-                rope_rename = { enabled = false },
-              },
-            },
-          },
-        },
+        -- Ruff: fast Python linter + formatter (replaces black, isort, flake8, pylsp)
+        ruff = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -378,8 +336,7 @@ return {
         'prettierd', -- Used for faster JS formatting
 
         'debugpy', -- Used for Python debugging
-        'black', -- Used for Python formatting
-        'isort', -- Used for Python formatting (imports)
+        'ruff', -- Used for Python linting and formatting
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

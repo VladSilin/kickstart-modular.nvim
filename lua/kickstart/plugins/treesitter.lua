@@ -43,7 +43,8 @@ return {
         additional_vim_regex_highlighting = { 'ruby' },
         disable = { 'latex' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      -- python: treesitter indent mishandles triple-quote strings, vim's builtin indent is fine
+      indent = { enable = true, disable = { 'ruby', 'python' } },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:

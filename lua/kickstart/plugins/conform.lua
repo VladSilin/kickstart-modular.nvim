@@ -40,7 +40,7 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        python = { 'ruff_fix', 'ruff_format' },
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- Making things work with React: https://github.com/stevearc/conform.nvim/issues/291
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
