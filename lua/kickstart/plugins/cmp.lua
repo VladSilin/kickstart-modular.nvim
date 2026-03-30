@@ -69,10 +69,11 @@ return {
           priority_weight = 2,
           comparators = {
             compare.exact,
-            compare.locality,
-            compare.recently_used,
             compare.score,
+            compare.recently_used,
+            compare.locality,
             require('cmp-under-comparator').under, -- deprioritize dunder methods
+            compare.sort_text, -- respect LSP server's preferred ordering
             compare.kind,
             compare.length,
             compare.order,

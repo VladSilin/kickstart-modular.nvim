@@ -40,6 +40,10 @@ return {
         opts = {
           progress = {
             ignore = {
+              -- Disable noisy pylsp lint notifications
+              function(msg)
+                return msg.lsp_client.name == 'pylsp' and string.find(msg.title, 'lint:')
+              end,
               -- Disable all pyright notifications
               function(msg)
                 return msg.lsp_client.name == 'pyright'
@@ -182,7 +186,13 @@ return {
             end
           end
 
-          -- Disable ruff hover (pyright provides better docs)
+          -- Disable pylsp features that duplicate pyright/ruff
+          if client and client.name == 'pylsp' then
+            client.server_capabilities.renameProvider = nil
+            client.server_capabilities.signatureHelpProvider = nil
+          end
+
+          -- Disable ruff hover (pyright or pylsp are always better)
           if client and client.name == 'ruff' then
             client.server_capabilities.hoverProvider = nil
           end
@@ -193,7 +203,7 @@ return {
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config {
         severity_sort = true,
-        float = { border = 'rounded', source = 'if_many' },
+        float = { source = 'if_many' }, -- border inherited from vim.o.winborder
         underline = { severity = vim.diagnostic.severity.ERROR },
         signs = vim.g.have_nerd_font and {
           text = {
@@ -231,6 +241,11 @@ return {
         -- clangd = {},
         -- gopls = {},
 
+        -- Python LSP stack:
+        --   pyright: types, completions, go-to-def, diagnostics
+        --   ruff: linting, formatting, import sorting
+        --   pylsp/Jedi: hover docs only
+
         -- See https://www.reddit.com/r/neovim/comments/sazbw6/comment/hw1s6qg/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
         -- for configuring to use both pyright and pylsp
         --
@@ -254,7 +269,37 @@ return {
             },
           },
         },
-        -- Ruff: fast Python linter + formatter (replaces black, isort, flake8, pylsp)
+        -- pylsp for hover docs (Jedi), everything else disabled to avoid conflicts
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                -- Disable all diagnostics/linting (ruff handles these)
+                pyflakes = { enabled = false },
+                flake8 = { enabled = false },
+                pycodestyle = { enabled = false },
+                pylint = { enabled = false },
+                mccabe = { enabled = false },
+                pydocstyle = { enabled = false },
+                -- Disable formatting (ruff handles this)
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                -- Disable completion (pyright handles this)
+                jedi_completion = { enabled = false },
+                -- Keep hover/docs enabled (the whole point)
+                jedi_hover = { enabled = true },
+                -- Disable remaining features to avoid duplicates
+                jedi_references = { enabled = false },
+                jedi_definition = { enabled = false },
+                jedi_symbols = { enabled = false },
+                jedi_signature_help = { enabled = false },
+                rope_completion = { enabled = false },
+                rope_rename = { enabled = false },
+              },
+            },
+          },
+        },
+        -- Ruff: fast Python linter + formatter (replaces black, isort, flake8)
         ruff = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -336,7 +381,6 @@ return {
         'prettierd', -- Used for faster JS formatting
 
         'debugpy', -- Used for Python debugging
-        'ruff', -- Used for Python linting and formatting
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
