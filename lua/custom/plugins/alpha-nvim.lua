@@ -142,5 +142,25 @@ return {
         end)
       end,
     })
+
+    -- When Lazy's float closes and leaves an empty buffer, show Alpha
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'lazy',
+      callback = function(ev)
+        vim.api.nvim_create_autocmd('BufWinLeave', {
+          buffer = ev.buf,
+          once = true,
+          callback = function()
+            vim.schedule(function()
+              local buf = vim.api.nvim_get_current_buf()
+              if vim.bo[buf].buftype == '' and vim.api.nvim_buf_get_name(buf) == '' and vim.api.nvim_buf_line_count(buf) <= 1 then
+                vim.cmd 'Alpha'
+                vim.cmd('bd ' .. buf)
+              end
+            end)
+          end,
+        })
+      end,
+    })
   end,
 }
