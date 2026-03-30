@@ -22,4 +22,5 @@ return {
   '󰃤 Debug step     <F1> step into • <F2> step over • <F3> step out',
   '󰃤 Debug break    <leader>b toggle breakpoint • <leader>B conditional breakpoint',
   '󰃤 Debug inspect  <leader>de eval under cursor • <leader>dv float scopes',
+  '󰗧 Registers      C-r " paste last d/y • C-r 0 last yank • C-r + clipboard • C-r / search • C-r = expr',
 }
