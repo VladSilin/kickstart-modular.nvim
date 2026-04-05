@@ -300,7 +300,16 @@ return {
           },
         },
         -- Ruff: fast Python linter + formatter (replaces black, isort, flake8)
-        ruff = {},
+        ruff = {
+          init_options = {
+            settings = {
+              lint = {
+                -- Pyflakes (F) rules duplicate Pyright diagnostics
+                ignore = { 'F' },
+              },
+            },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --

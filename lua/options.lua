@@ -132,13 +132,13 @@ vim.opt.fillchars = { eob = ' ' }
 vim.o.winborder = 'rounded'
 
 -- Match float/popup background to editor background (colorscheme sets a different bg by default)
-vim.api.nvim_create_autocmd('ColorScheme', {
-  callback = function()
-    local bg = vim.api.nvim_get_hl(0, { name = 'Normal' }).bg
-    vim.api.nvim_set_hl(0, 'NormalFloat', { bg = bg })
-    vim.api.nvim_set_hl(0, 'FloatBorder', { bg = bg })
-    vim.api.nvim_set_hl(0, 'Pmenu', { bg = bg })
-  end,
-})
+-- vim.api.nvim_create_autocmd('ColorScheme', {
+--   callback = function()
+--     local bg = vim.api.nvim_get_hl(0, { name = 'Normal' }).bg
+--     vim.api.nvim_set_hl(0, 'NormalFloat', { bg = bg })
+--     vim.api.nvim_set_hl(0, 'FloatBorder', { bg = bg })
+--     vim.api.nvim_set_hl(0, 'Pmenu', { bg = bg })
+--   end,
+-- })
 
 -- vim: ts=2 sts=2 sw=2 et

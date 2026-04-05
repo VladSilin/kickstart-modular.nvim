@@ -1,16 +1,21 @@
--- This plugin provides better syntax highlighting and code understanding using Tree-sitter, a parser generator tool and an incremental parsing library.
---
--- NOTE: May need to `brew install` treesitter for automatic loading of language plugins
+-- Neovim 0.12+ has built-in treesitter highlighting, indent, and folding.
+-- nvim-treesitter's master branch (the old all-in-one plugin) is archived and
+-- crashes on 0.12 because its query predicates conflict with the new runtime.
+-- The main branch is a rewrite: parser/query installation only.
+-- Everything else (highlighting, indent, folding) is now handled natively.
+-- IMPORTANT: The main branch requires `tree-sitter-cli` to compile parsers.
+-- Install it with: brew install tree-sitter-cli
 return {
-  { -- Highlight, edit, and navigate code
+  {
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-    opts = {
-      -- NOTE: Need both 'css' and 'styled' for styled-components to work
-      -- (see also typescript-tools.lua for LSP support for styled-components)
-      ensure_installed = {
+    config = function()
+      require('nvim-treesitter').setup {}
+
+      -- Install parsers
+      require('nvim-treesitter').install {
         'bash',
         'c',
         'cpp',
@@ -32,26 +37,33 @@ return {
         'java',
         'hcl',
         'terraform',
-      },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = {
-        enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
-        disable = { 'latex' },
-      },
-      -- python: treesitter indent mishandles triple-quote strings, vim's builtin indent is fine
-      indent = { enable = true, disable = { 'ruby', 'python' } },
-    },
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+        'json',
+        'astro',
+      }
+
+      -- Enable treesitter highlighting and auto-install missing parsers.
+      -- Adapted from https://github.com/nvim-treesitter/nvim-treesitter/discussions/8546
+      -- Caveat: on first run, if the install dir doesn't exist yet, a restart is needed
+      -- for runtimepath to pick it up. After that, new parsers load immediately.
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local lang = vim.treesitter.language.get_lang(args.match)
+          if not lang then
+            return
+          end
+
+          if vim.treesitter.language.add(lang) then
+            vim.treesitter.start(args.buf)
+          elseif vim.tbl_contains(require('nvim-treesitter').get_available(), lang) then
+            require('nvim-treesitter').install({ lang }):await(function()
+              if vim.treesitter.language.add(lang) then
+                vim.treesitter.start(args.buf)
+              end
+            end)
+          end
+        end,
+      })
+    end,
   },
 }
 -- vim: ts=2 sts=2 sw=2 et
